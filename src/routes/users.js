@@ -1,33 +1,51 @@
 const express = require('express')
-const User = require('../models/user')
 
 const router = express.Router()
+const User = require('../models/user')
+const Product = require('../models/product')
 
-/* GET users listing. */
-router.get('/', async (req, res) => {
-  const query = {}
-  res.send(await User.find(query).catch(error => console.log('Users not found, error: ', error)))
-})
+router.get('/initialise', async function (req, res) {
+  console.log('---------------------------')
+  const shoe = new Product({ image: 'url', price: 1500, description: 'This is a good shoe' })
+  shoe.save()
+  const mariana = new User({ name: 'mariana', email: 'mariana@gmail.com', password: 'password' })
+  const loveth = new User({ name: 'Loveth', email: 'loveth@gmail.com', password: 'password' })
 
-/* GET initialize */
-router.get('/initialize', async (req, res) => {
-  const mihri = await User.create({ name: 'mihri', age: 35 })
-  const armagan = await User.create({ name: 'armagan', age: 36 })
+  const zeynep = new User({ name: 'Zeynep', email: 'Zeynep@gmail.com', password: 'password' })
 
-  const steve = await User.create({ name: 'steve', age: 21 })
-  steve.bio = 'An awesome hacker who has seen it all, and now sharing them all with you.'
-
-  steve.greet(mihri)
-  steve.greet(armagan)
-
-  console.log(steve)
+  zeynep.list(shoe)
+  loveth.list(shoe)
+  mariana.list(shoe)
+  await mariana.save()
+  await loveth.save()
+  await zeynep.save()
+  // const users = [mariana, loveth, zeynep]
+  console.log(zeynep)
+  console.log(loveth)
+  console.log(mariana)
   res.sendStatus(200)
+  // res.send(users)
 })
 
-/* POST user */
-router.post('/', async (req, res) => {
-  const createdUser = await User.create(req.body)
-  res.status(201).send(createdUser)
+// router.get('/', async function (req, res) {
+//   const result = await User.find({})
+
+//   // if (req.query.name) {
+//   //   result = U.filter(user => user.name === req.query.name)
+//   // }
+//   res.send(result)
+// })
+router.get('/', async function (req, res) {
+  const users = await User.find({})
+  if (users) res.render('user', { users })
+  else res.sendStatus(404)
+  // res.send(users)
 })
 
+router.post('/', async function (req, res) {
+  const { name, email, password } = req.body
+
+  const user = await User.create({ name, email, password })
+  res.send(user)
+})
 module.exports = router

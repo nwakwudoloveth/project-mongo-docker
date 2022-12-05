@@ -1,41 +1,57 @@
 const mongoose = require('mongoose')
 const autopopulate = require('mongoose-autopopulate')
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
+
     required: true,
   },
-  age: {
-    type: Number,
+  email: {
+    type: String,
+
     required: true,
   },
-  bio: String,
-  createdAt: {
-    type: Date,
-    default: new Date(),
+  password: {
+    type: String,
   },
+  cart: [],
+  order: [],
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      autopopulate: true,
+    },
+  ],
 })
 
 class User {
-  greet(person) {
-    console.log(`Hello ${person.name}, this is ${this.name}`)
-  }
-
   get profile() {
-    return `
-# ${this.name} (${this.age})
-Bio: ${this.bio}
-    `
+    return this.name + this.email + this.password
   }
 
-  set profile(newValue) {
-    throw new Error(`profile is only a getter. You can't override it with ${newValue}.`)
+  list(newProduct) {
+    this.products.push(newProduct)
+  }
+
+  // addToCart() {}
+
+  // deleteFromCart() {}
+
+  // search() {}
+
+  viewOffers() {
+    return this.products
+  }
+
+  deleteOffer() {
+    return this.products
+    // look for a method that deletes item in array
   }
 }
 
-userSchema.loadClass(User)
-userSchema.plugin(autopopulate)
+UserSchema.loadClass(User)
+UserSchema.plugin(autopopulate)
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', UserSchema)
