@@ -1,0 +1,53 @@
+{
+	"name": "sose-express-mongo-docker",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Express + MongoDB + Docker Starter Template with Gitpod configuration",
+	"license": "MIT",
+	"scripts": {
+		"start": "node ./bin/www",
+		"dev": "nodemon ./bin/www",
+		"eslint:check": "npx eslint .",
+		"eslint:fix": "npx eslint --fix .",
+		"lint": "lint-staged",
+		"prepare": "husky install",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint"
+		}
+	},
+	"lint-staged": {
+		"*.js": [
+			"pretty-quick --staged",
+			"eslint --fix"
+		],
+		"*.+(json|css|md)": [
+			"pretty-quick --staged"
+		]
+	},
+	"dependencies": {
+		"cookie-parser": "~1.4.4",
+		"debug": "~2.6.9",
+		"dotenv": "^16.0.1",
+		"express": "~4.16.1",
+		"http-errors": "~1.6.3",
+		"mongoose": "^6.4.4",
+		"mongoose-autopopulate": "^0.16.1",
+		"morgan": "~1.9.1",
+		"pug": "^3.0.2"
+	},
+	"devDependencies": {
+		"eslint": "^8.19.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"husky": "^8.0.1",
+		"lint-staged": "^13.0.3",
+		"nodemon": "^2.0.19",
+		"prettier": "^2.7.1",
+		"pretty-quick": "^3.1.3"
+	}
+}
