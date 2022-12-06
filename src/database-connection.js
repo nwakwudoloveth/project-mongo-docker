@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
-// eslint-disable-next-line prefer-const
-let connectionString = process.env.MONGODB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017'
+const username = process.env.MONGODB_USERNAME
+const password = process.env.MONGODB_PASSWORD
+const dbName = process.env.MONGODB_DATABASE || 'mongodb://127.0.0.1:27017'
 
 mongoose.set('debug', true)
 
 mongoose
-  .connect(connectionString, {
+  .connect(`mongodb+srv://${username}:${password}@cluster0.1hrf2s4.mongodb.net/${dbName}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log('connection established'))
-  .catch(error => console.log('not connected:', error))
+  .catch(console.log)
