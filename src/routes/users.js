@@ -27,5 +27,27 @@ router.get('/', async function (req, res, next) {
     res.sendStatus(404)
   }
 })
+// post request
+router.post('/', async function (req, res, next) {
+  const { name, email, password } = req.body
+  try {
+    if (!email || !name || !password) {
+      res
+        .send({
+          message: 'Missing fields.',
+        })
+        .status(400)
+      return
+    }
+    const user = await User.create({
+      name,
+      email,
+      password,
+    })
+    res.send(user)
+  } catch (e) {
+    next(e)
+  }
+})
 
 module.exports = router
